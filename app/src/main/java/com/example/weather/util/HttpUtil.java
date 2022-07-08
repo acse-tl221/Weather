@@ -26,7 +26,6 @@ public class HttpUtil {
                         HttpEntity entity = httpResponse.getEntity();
                         responseData = EntityUtils.toString(entity, "utf-8");
                     }
-                    System.out.println(responseData);
                     if (listener != null) {
                         listener.onFinish(responseData);
                     }

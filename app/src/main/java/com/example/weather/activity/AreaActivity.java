@@ -11,7 +11,10 @@ import com.example.weather.util.HttpUtil;
 import com.example.weather.util.dataUtils;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.View;
 import android.view.Window;
 import android.widget.AdapterView;
@@ -60,6 +63,10 @@ public class AreaActivity extends AppCompatActivity {
      * 选中的城市
      */
     private City selectedCity;
+
+    private County selectedCounty;
+
+    private boolean isFromWeatherActivity;
     /**
      * 当前选中的级别
      */
@@ -67,6 +74,14 @@ public class AreaActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        isFromWeatherActivity = getIntent().getBooleanExtra("from_weather_activity", false);
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        if (prefs.getBoolean("city_selected", false) && !isFromWeatherActivity) {
+            Intent intent = new Intent(this, WeatherActivity.class);
+            startActivity(intent);
+            finish();
+            return;
+        }
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_area);
         listView = (ListView) findViewById(R.id.list_view);
@@ -83,13 +98,22 @@ public class AreaActivity extends AppCompatActivity {
                 } else if (currentLevel == LEVEL_CITY) {
                     selectedCity = cityList.get(index);
                     queryCounties();
-                } }
+                } else if (currentLevel == LEVEL_COUNTY) {
+                    selectedCounty = countyList.get(index);
+                    String weather_id = selectedCounty.getCountyCode();
+                    Intent intent = new Intent(AreaActivity.this, WeatherActivity.class);
+                    intent.putExtra("weather_id", weather_id);
+                    startActivity(intent);
+                    finish();
+                }
+            }
         });
         queryProvinces(); // 加载省级数据
     }
     /**
      * 查询全国所有的省，优先从数据库查询，如果没有查询到再去服务器上查询。
      */
+
     private void queryProvinces() {
         provinceList = weatherdb.loadProvinces();
         if (provinceList.size() > 0) {
@@ -165,7 +189,7 @@ public class AreaActivity extends AppCompatActivity {
                     result = dataUtils.handleCountiesResponse(weatherdb, response, selectedCity.getId());
                 }
                 if (result) {
-// 通过runOnUiThread()方法回到主线程处理逻辑
+                // 通过runOnUiThread()方法回到主线程处理逻辑
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {

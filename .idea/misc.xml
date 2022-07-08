@@ -6,7 +6,14 @@
         <entry key="app/src/main/res/layout/activity_area.xml" value="0.2078125" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.1539855072463768" />
         <entry key="app/src/main/res/layout/activity_weather.xml" value="0.15520833333333334" />
+        <entry key="app/src/main/res/layout/aqi.xml" value="0.2109375" />
+        <entry key="app/src/main/res/layout/forecast.xml" value="0.2109375" />
+        <entry key="app/src/main/res/layout/forecast_item.xml" value="0.2109375" />
+        <entry key="app/src/main/res/layout/now.xml" value="0.2109375" />
         <entry key="app/src/main/res/layout/search_area.xml" value="0.15520833333333334" />
+        <entry key="app/src/main/res/layout/suggestion.xml" value="0.2109375" />
+        <entry key="app/src/main/res/layout/title.xml" value="0.2109375" />
+        <entry key="app/src/main/res/layout/weather.xml" value="0.2109375" />
       </map>
     </option>
   </component>
